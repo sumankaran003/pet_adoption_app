@@ -11,7 +11,8 @@ class AdoptionHistoryProvider extends ChangeNotifier {
     try {
       final query = FirebaseFirestore.instance
           .collection('pets')
-          .where('isSold', isEqualTo: true);
+          .where('isSold', isEqualTo: true)
+          .orderBy('timestampOfAdoption', descending: true);
 
       query.snapshots().listen((snapshot) {
         final petsData = snapshot.docs.map((doc) {
@@ -33,7 +34,7 @@ class AdoptionHistoryProvider extends ChangeNotifier {
         notifyListeners();
       });
     } catch (error) {
-      // Handle the error gracefully
+      _adoptedPets=[];
     }
   }
 }
